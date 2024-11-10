@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "649331119705",
+    "project_id": "quickvid-8d439",
+    "storage_bucket": "quickvid-8d439.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649331119705:android:dd710c39b8f54966c54348",
+        "android_client_info": {
+          "package_name": "com.example.quick_vid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtYYpQOpTaJewGpbX7pLL67nDsBK4BEac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
