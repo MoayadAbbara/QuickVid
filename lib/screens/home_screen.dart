@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:quick_vid/consts/strings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,23 +10,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late TextEditingController linkInputController;
   @override
   void initState() {
     super.initState();
-    // Set the status bar color to match the top gradient color
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Colors.red, // Color from the gradient
-        statusBarIconBrightness:
-            Brightness.light, // Icon brightness for visibility
+        statusBarColor: Colors.red,
+        statusBarIconBrightness: Brightness.light,
       ),
     );
+    linkInputController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    linkInputController.dispose();
+    super.dispose();
   }
 
   Widget _buildActionCard({required IconData icon, required String title}) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height / 16,
+      padding: const EdgeInsets.symmetric(
+          vertical: 10.0), // Add padding for height adjustment
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: const Color.fromARGB(255, 73, 14, 10),
@@ -39,22 +48,26 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center, // Center vertically
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(
               icon,
               color: Colors.white,
               size: 28,
             ),
           ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'BebasNeue',
+          Expanded(
+            // Wrap Text to handle overflow
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 22,
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                fontFamily: 'BebasNeue',
+              ),
             ),
           ),
         ],
@@ -135,10 +148,12 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: TextField(
-                    decoration: InputDecoration(
+                    controller: linkInputController,
+                    decoration: const InputDecoration(
                       prefixIcon: Icon(
                         Icons.link_rounded,
                         color: Color.fromARGB(255, 73, 14, 10),
@@ -146,7 +161,6 @@ class _HomePageState extends State<HomePage> {
                       hintText: 'youtube.com/watch?v=example',
                       border: OutlineInputBorder(),
                       focusColor: Color.fromARGB(255, 73, 14, 10),
-                      prefixIconColor: Colors.amber,
                     ),
                   ),
                 ),
@@ -154,7 +168,12 @@ class _HomePageState extends State<HomePage> {
                   width: MediaQuery.of(context).size.width * 0.5,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      String url = linkInputController.text;
+                      Navigator.pushNamed(context, videoDetails, arguments: {
+                        'VideoUrl': url,
+                      });
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 73, 14, 10),
                       shape: RoundedRectangleBorder(
