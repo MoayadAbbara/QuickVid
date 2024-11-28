@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quick_vid/consts/strings.dart';
+import 'package:quick_vid/screens/full_transkript_screen.dart';
 import 'package:quick_vid/screens/home_screen.dart';
 import 'package:quick_vid/screens/video_details.dart';
 
@@ -10,10 +11,17 @@ class AppRouter {
       case homePage:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case videoDetails:
-        String videoId = args['VideoUrl'] as String;
+        String videoUrl = args['VideoUrl'] as String;
         return MaterialPageRoute(
           builder: (_) => VideoDetails(
-            videoUrl: videoId,
+            videoUrl: videoUrl,
+          ),
+        );
+      case videoFullTranskript:
+        String videoId = args['VideoId'] as String;
+        return MaterialPageRoute(
+          builder: (_) => FullTranskript(
+            videoId: videoId,
           ),
         );
       default:

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class VideoSubInfo extends StatelessWidget {
   final String title;
-  final Icon icon;
+  final IconData icon;
   const VideoSubInfo({super.key, required this.title, required this.icon});
 
   @override
@@ -17,8 +17,8 @@ class VideoSubInfo extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.person,
+          Icon(
+            icon,
             color: Colors.white,
             size: 21,
           ),

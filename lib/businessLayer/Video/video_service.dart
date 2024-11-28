@@ -4,13 +4,10 @@ import 'package:quick_vid/keys.dart';
 import 'package:quick_vid/models/video.dart';
 
 class VideoService {
-  final String yotubeApiUrlBase = "https://www.googleapis.com/youtube/v3/";
-//TODO :: Move the Value To Scure File
-
   Future<Video> fetchVideoInfo(String url) async {
     String videoId = getIdFromUrl(url);
     final response = await http.get(Uri.parse(
-        '${yotubeApiUrlBase}videos?part=snippet,contentDetails&id=$videoId&key=$YoutubeApiKey'));
+        '${yotubeApiBaseUrl}videos?part=snippet,contentDetails&id=$videoId&key=$youtubeApiKey'));
     if (response.statusCode == 200) {
       Map jsonResponse = json.decode(response.body);
       Map<String, dynamic> videoInfoMap = {
@@ -25,7 +22,27 @@ class VideoService {
       Video vid = Video.fromJson(videoInfoMap);
       return vid;
     } else {
-      throw Exception('Failed to load users');
+      throw Exception('Failed to load info');
+    }
+  }
+
+  Future<String> getVideoTranskript(String videoId) async {
+    final response = await http.post(
+      Uri.parse('${flaskAppBaseUrl}get_transcript'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'videoId': videoId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Map jsonResponse = json.decode(response.body);
+      String transcript = jsonResponse['transcript'];
+      return transcript;
+    } else {
+      throw Exception('Failed to load info');
     }
   }
 
