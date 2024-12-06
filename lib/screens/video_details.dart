@@ -110,7 +110,7 @@ class _VideoDetailsState extends State<VideoDetails> {
                           'Get Summarized Transcript',
                           Icons.summarize,
                           video.id,
-                          videoFullTranskript,
+                          videoSummarizedTranskript,
                           context,
                         ),
                         optionsCard(

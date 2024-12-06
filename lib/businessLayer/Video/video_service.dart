@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:http/http.dart' as http;
 import 'package:quick_vid/keys.dart';
 import 'package:quick_vid/models/video.dart';
@@ -70,5 +71,26 @@ class VideoService {
     } else {
       return '$minutes Min';
     }
+  }
+
+  Future<String> SummarizeVideoText(String videoId) async {
+    String transkript = await getVideoTranskript(videoId);
+    final model = GenerativeModel(
+      model: 'gemini-1.5-flash',
+      apiKey: geminiApiKey,
+      generationConfig: GenerationConfig(
+        temperature: 0.75,
+        topK: 15,
+        topP: 0.90,
+        maxOutputTokens: 8192,
+        responseMimeType: 'text/plain',
+      ),
+      systemInstruction: Content.system(
+          "You are tasked with summarizing a transcript extracted from a YouTube video. Your goal is to condense the content while ensuring that all the key information is retained. The summary should be about 40% of the original text's word count. For example, if the original text is 1000 words, your summary should be approximately 400 words.\nEnsure that you highlight all major points and key ideas from the video. Remove any repetitive, irrelevant, or minor details. The summary should maintain the core message and tone of the original content, presenting the important facts and insights concisely.\mThe summary should use the same language as the original transcript. If the transcript is in English, the summary should be in English. If the transcript is in Arabic, the summary should be in Arabic, and so on."),
+    );
+    final chat = model.startChat(history: []);
+    final content = Content.text(transkript);
+    final response = await chat.sendMessage(content);
+    return response.text!;
   }
 }
