@@ -117,7 +117,7 @@ class _VideoDetailsState extends State<VideoDetails> {
                           'Chat With Video',
                           Icons.video_chat,
                           video.id,
-                          videoFullTranskript,
+                          chat,
                           context,
                         ),
                         optionsCard(

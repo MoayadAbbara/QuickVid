@@ -24,20 +24,20 @@ class _SummarizedTranskriptState extends State<SummarizedTranskript> {
         backgroundColor: const Color.fromARGB(255, 73, 14, 10),
       ),
       body: FutureBuilder(
-        future: videoService.SummarizeVideoText(widget.videoId),
+        future: videoService.summarizeVideoText(widget.videoId),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasData) {
-            String Transkript = snapshot.data! as String;
+            String transkript = snapshot.data! as String;
             return SingleChildScrollView(
               child: SafeArea(
                 child: Column(children: [
                   Text(
-                    Transkript,
-                    style: TextStyle(
+                    transkript,
+                    style: const TextStyle(
                       fontSize: 24,
                     ),
                   ),

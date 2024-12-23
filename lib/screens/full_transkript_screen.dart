@@ -31,13 +31,13 @@ class _FullTranskriptState extends State<FullTranskript> {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasData) {
-            String Transkript = snapshot.data! as String;
+            String transkript = snapshot.data! as String;
             return SingleChildScrollView(
               child: SafeArea(
                 child: Column(children: [
                   Text(
-                    Transkript,
-                    style: TextStyle(
+                    transkript,
+                    style: const TextStyle(
                       fontSize: 24,
                     ),
                   ),
