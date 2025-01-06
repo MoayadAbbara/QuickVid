@@ -14,16 +14,27 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   VideoService v = VideoService();
   ChatUser currentUser = ChatUser(id: "0", firstName: "User");
-  ChatUser geminiUser = ChatUser(id: "1", firstName: "Gemini");
+  ChatUser geminiUser = ChatUser(id: "1", firstName: "QuickVid");
   final Gemini gemini = Gemini.instance;
   List<ChatMessage> messages = [];
   List<Content> chats = [];
+  late String transkript;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTranskript();
+  }
+
+  void fetchTranskript() async {
+    transkript = await v.getVideoTranskript(widget.videoId);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gemini Chat'),
+        title: const Text('QuickVid AI'),
         centerTitle: true,
       ),
       body: _buildUI(),
@@ -43,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
       messages = [chatMessage, ...messages];
     });
     try {
-      String transkript = await v.getVideoTranskript(widget.videoId);
+      // String transkript = await v.getVideoTranskript(widget.videoId);
       String question = chatMessage.text;
       Content chatContent = Content(parts: [Part.text(question)], role: 'user');
       chats = [...chats, chatContent];
@@ -66,9 +77,6 @@ class _ChatScreenState extends State<ChatScreen> {
           setState(() {
             messages = [replyMessage, ...messages];
           });
-          // for (int i = 0; i < chats.length; i++) {
-          //   print(chats[i].parts![0]);
-          // }
         }
       }).catchError((e) {
         print('Error occurred while sending message to Gemini: $e');

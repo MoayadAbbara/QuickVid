@@ -11,6 +11,7 @@ class FullTranskript extends StatefulWidget {
 
 class _FullTranskriptState extends State<FullTranskript> {
   VideoService videoService = VideoService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +20,7 @@ class _FullTranskriptState extends State<FullTranskript> {
         centerTitle: true,
         title: const Text(
           'QuickVid',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color.fromARGB(255, 73, 14, 10),
       ),
@@ -28,27 +29,39 @@ class _FullTranskriptState extends State<FullTranskript> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: Color.fromARGB(255, 73, 14, 10),
+              ),
             );
           } else if (snapshot.hasData) {
             String transkript = snapshot.data! as String;
-            return SingleChildScrollView(
-              child: SafeArea(
-                child: Column(children: [
-                  Text(
-                    transkript,
-                    style: const TextStyle(
-                      fontSize: 24,
+            return SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: SingleChildScrollView(
+                        child: SelectableText(
+                          transkript,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            height: 1.5,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ]),
+                ],
               ),
             );
           } else {
             return const Center(
               child: Text(
                 'Check The URL And Try Again',
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(fontSize: 18, color: Colors.red),
               ),
             );
           }
